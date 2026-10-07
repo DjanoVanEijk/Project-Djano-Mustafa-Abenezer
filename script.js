@@ -45,6 +45,44 @@ addToCartButtons.forEach((button) => {
   });
 });
 
+//============================================
+// User Story 3 - Producten zoeken (Mustafa)//
+//============================================
+
+const searchBar = document.querySelector(".search-bar");
+const productCards = document.querySelectorAll(".product-card");
+const noResultsMessage = document.querySelector("#no-results-message");
+
+if (searchBar) {
+  searchBar.addEventListener("input", (e) => {
+    const searchTerm = e.target.value.toLowerCase().trim();
+    let visibleCount = 0;
+
+    productCards.forEach((card) => {
+      const nameElement = card.querySelector(".product-card__name");
+      const productName = nameElement ? nameElement.textContent.toLowerCase() : "";
+
+      if (productName.includes(searchTerm)) {
+        card.style.display = "block";
+        visibleCount++;
+      }else{
+        card.style.display = "none";
+      }
+    });
+
+    if (noResultsMessage) {
+      if (visibleCount === 0) {
+        noResultsMessage.style.display = "block";
+      } else {
+        noResultsMessage.style.display = "none";
+      }
+    }
+  });
+}
+
+
+
+
 // ===========================================
 // User Story 4 - Countdown timer (TODO: Djano)
 // Dit is nog een placeholder, geen echte countdown.
