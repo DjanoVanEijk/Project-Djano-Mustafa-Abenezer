@@ -48,7 +48,7 @@ const addToCartButtons = document.querySelectorAll(".add-to-cart");
  
 addToCartButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    // Feedback: knop verandert tijdelijk van tekst en kleur
+    
     button.textContent = "Toegevoegd ✓";
     button.classList.add("clicked");
  
