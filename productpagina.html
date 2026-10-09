@@ -1,45 +1,110 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flash Sale Webshop</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header class="header">
-	<a class="logo" href="index.html">Webshop</a>
+  <header class="header">
+    <a class="logo" href="index.html">Webshop</a>
     <nav class="nav">
-	<a href="???.html">Navigatie</a>
-	<a href="???.html">Navigatie</a>
-    <a href="???.html">Navigatie</a>
+      <a href="index.html">Home</a>
+      <a href="productpagina.html">Producten</a>
+      <a href="contactpagina.html">Contact</a>
     </nav>
-    </header>
-    <main>
-        <h1 class="product-title">25% Korting</h1>
-        <p class="countdown" role="timer">Actie eindigt over <span id="countdown">...</span></p>
+  </header>
 
-        <div class="product-list">
-            <div class="product-container">
-                <img src="img/shirt_1.png" alt="Product Image" width="300" height="300">
-                <span>"who is he?" t-shirt</span>
-                <span>Prijs: $51.75 </span>
-            </div>
+  <main class="product-page">
 
-            <div class="product-container">
-                <img src="img/shirt_2.png" alt="Product Image" width="300" height="300">
-                <span>"???" t-shirt</span>
-                <span>Prijs: $50.25 </span>
-            </div>
+    <input type="search" class="search-bar" placeholder="Zoeken naar producten..." aria-label="Zoeken naar producten">
 
-            <div class="product-container">
-                <img src="img/shirt_3.png" alt="Product Image" width="300" height="300">
-                <span>"sonion" t-shirt</span>
-                <span>Prijs: $31.50</span>
-            </div>
-        </div>
-    </main>
+    <div class="product-list">
+      <div class="product-container product-card">
+        <img src="img/shirt_1.png" alt='"who is he?" t-shirt' class="product-card__image" width="300" height="300">
+        <span class="product-card__name">"who is he?" t-shirt</span>
+        <span class="product-card__price">$51.75</span>
+        <span class="stock-badge">Nog maar 2 op voorraad</span>
+        <button class="btn-primary add-to-cart" type="button">In winkelwagen</button>
+      </div>
 
-    <script src="script.js"></script>
+      <div class="product-container product-card">
+        <img src="img/shirt_2.png" alt='"???" t-shirt' class="product-card__image" width="300" height="300">
+        <span class="product-card__name">"???" t-shirt</span>
+        <span class="product-card__price">$50.25</span>
+        <span class="stock-badge">Op voorraad</span>
+        <button class="btn-primary add-to-cart" type="button">In winkelwagen</button>
+      </div>
+
+      <div class="product-container product-card">
+        <img src="img/shirt_3.png" alt='"sonion" t-shirt' class="product-card__image" width="300" height="300">
+        <span class="product-card__name">"sonion" t-shirt</span>
+        <span class="product-card__price">$31.50</span>
+        <span class="stock-badge">Op voorraad</span>
+        <button class="btn-primary add-to-cart" type="button">In winkelwagen</button>
+      </div>
+
+      <div class="product-container product-card">
+        <img src="img/shirt_1.png" alt='"who is he?" t-shirt' class="product-card__image" width="300" height="300">
+        <span class="product-card__name">"who is he?" t-shirt</span>
+        <span class="product-card__price">$51.75</span>
+        <span class="stock-badge">Nog maar 2 op voorraad</span>
+        <button class="btn-primary add-to-cart" type="button">In winkelwagen</button>
+      </div>
+
+      <div class="product-container product-card">
+        <img src="img/shirt_2.png" alt='"???" t-shirt' class="product-card__image" width="300" height="300">
+        <span class="product-card__name">"???" t-shirt</span>
+        <span class="product-card__price">$50.25</span>
+        <span class="stock-badge">Op voorraad</span>
+        <button class="btn-primary add-to-cart" type="button">In winkelwagen</button>
+      </div>
+
+      <div class="product-container product-card">
+        <img src="img/shirt_3.png" alt='"sonion" t-shirt' class="product-card__image" width="300" height="300">
+        <span class="product-card__name">"sonion" t-shirt</span>
+        <span class="product-card__price">$31.50</span>
+        <span class="stock-badge">Op voorraad</span>
+        <button class="btn-primary add-to-cart" type="button">In winkelwagen</button>
+      </div>
+
+      <div class="product-container product-card">
+        <img src="img/shirt_1.png" alt='"who is he?" t-shirt' class="product-card__image" width="300" height="300">
+        <span class="product-card__name">"who is he?" t-shirt</span>
+        <span class="product-card__price">$51.75</span>
+        <span class="stock-badge">Nog maar 2 op voorraad</span>
+        <button class="btn-primary add-to-cart" type="button">In winkelwagen</button>
+      </div>
+
+      <div class="product-container product-card">
+        <img src="img/shirt_2.png" alt='"???" t-shirt' class="product-card__image" width="300" height="300">
+        <span class="product-card__name">"???" t-shirt</span>
+        <span class="product-card__price">$50.25</span>
+        <span class="stock-badge">Op voorraad</span>
+        <button class="btn-primary add-to-cart" type="button">In winkelwagen</button>
+      </div>
+
+      <div class="product-container product-card">
+        <img src="img/shirt_3.png" alt='"sonion" t-shirt' class="product-card__image" width="300" height="300">
+        <span class="product-card__name">"sonion" t-shirt</span>
+        <span class="product-card__price">$31.50</span>
+        <span class="stock-badge">Op voorraad</span>
+        <button class="btn-primary add-to-cart" type="button">In winkelwagen</button>
+      </div>
+
+      <div class="product-container product-card">
+        <img src="img/shirt_1.png" alt='"who is he?" t-shirt' class="product-card__image" width="300" height="300">
+        <span class="product-card__name">"who is he?" t-shirt</span>
+        <span class="product-card__price">$51.75</span>
+        <span class="stock-badge">Nog maar 2 op voorraad</span>
+        <button class="btn-primary add-to-cart" type="button">In winkelwagen</button>
+      </div>
+
+      <p id="no-results-message">Geen producten gevonden.</p>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>

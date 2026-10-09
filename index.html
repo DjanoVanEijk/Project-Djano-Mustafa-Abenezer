@@ -7,60 +7,46 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  <!-- ============ HEADER ============ -->
-  <header class="site-header">
-    <div class="logo">Webshop</div>
-    <input type="text" class="search-bar" placeholder="Zoeken naar producten...">
-    <nav>
-      <ul class="main-nav">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Aanbiedingen</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
+  <header class="header">
+    <a class="logo" href="index.html">Webshop</a>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="productpagina.html">Producten</a>
+      <a href="contactpagina.html">Contact</a>
     </nav>
   </header>
 
-  <!-- ============ COUNTDOWN TIMER (User Story 4) ============ -->
-  <div class="countdown-timer" id="countdown">
-    Aanbieding eindigt over: <span id="countdown-value">23:59:59</span>
-  </div>
+  <main>
+    <h1 class="product-title">25% Korting</h1>
+    <p class="countdown" role="timer">Actie eindigt over <span id="countdown">...</span></p>
 
-  <!-- ============ PRODUCT GRID (User Story 1) ============ -->
-  <main class="product-grid">
-
-    <div class="product-card">
-      <img src="images/product1.jpg" alt="Naam van product 1" class="product-card__image">
-      <div class="product-card__info">
-        <p class="product-card__name">Koptelefoon</p>
-        <p class="product-card__price">€ 29,99</p>
-        <span class="stock-badge">Nog maar 2 op voorraad</span><br>
-        <button class="btn btn-primary add-to-cart">In winkelwagen</button>
+    <div class="product-list">
+      <div class="product-container product-card">
+        <img src="img/shirt_1.png" alt='"who is he?" t-shirt' class="product-card__image" width="300" height="300">
+        <span class="product-card__name">"who is he?" t-shirt</span>
+        <span class="product-card__price">$51.75</span>
+        <span class="stock-badge">Nog maar 2 op voorraad</span>
+        <button class="btn-primary add-to-cart" type="button">In winkelwagen</button>
       </div>
-    </div>
 
-    <div class="product-card">
-      <img src="images/product2.jpg" alt="Naam van product 2" class="product-card__image">
-      <div class="product-card__info">
-        <p class="product-card__name">Zonnebril</p>
-        <p class="product-card__price">€ 19,99</p>
-        <span class="stock-badge">Op voorraad</span><br>
-        <button class="btn btn-primary add-to-cart">In winkelwagen</button>
+      <div class="product-container product-card">
+        <img src="img/shirt_2.png" alt='"???" t-shirt' class="product-card__image" width="300" height="300">
+        <span class="product-card__name">"???" t-shirt</span>
+        <span class="product-card__price">$50.25</span>
+        <span class="stock-badge">Op voorraad</span>
+        <button class="btn-primary add-to-cart" type="button">In winkelwagen</button>
       </div>
-    </div>
 
-    <div class="product-card">
-      <img src="images/product3.jpg" alt="Naam van product 3" class="product-card__image">
-      <div class="product-card__info">
-        <p class="product-card__name">Sneaker</p>
-        <p class="product-card__price">€ 44,99</p>
-        <span class="stock-badge">Op voorraad</span><br>
-        <button class="btn btn-primary add-to-cart">In winkelwagen</button>
+      <div class="product-container product-card">
+        <img src="img/shirt_3.png" alt='"sonion" t-shirt' class="product-card__image" width="300" height="300">
+        <span class="product-card__name">"sonion" t-shirt</span>
+        <span class="product-card__price">$31.50</span>
+        <span class="stock-badge">Op voorraad</span>
+        <button class="btn-primary add-to-cart" type="button">In winkelwagen</button>
       </div>
+
+      <p id="no-results-message">Geen producten gevonden.</p>
     </div>
-
-    <p id="no-results-message">Geen producten gevonden.</p>
-
   </main>
 
   <script src="script.js"></script>

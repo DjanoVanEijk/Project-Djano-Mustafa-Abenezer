@@ -63,7 +63,7 @@ if (searchBar) {
       const productName = nameElement ? nameElement.textContent.toLowerCase() : "";
 
       if (productName.includes(searchTerm)) {
-        card.style.display = "block";
+        card.style.display = "flex";
         visibleCount++;
       }else{
         card.style.display = "none";
