@@ -1,0 +1,50 @@
+[
+  {
+    "name": "me making poop kopje",
+    "image": "img/chef_kopje.png",
+    "price": 51.75,
+    "stock": "Nog maar 2 op voorraad"
+  },
+  {
+    "name": "??? tas",
+    "image": "img/clark_tas.png",
+    "price": 50.25,
+    "stock": "Op voorraad"
+  },
+  {
+    "name": "John Pork puzzel",
+    "image": "img/johnpork_puzzel.png",
+    "price": 31.50,
+    "stock": "Op voorraad"
+  },
+  {
+    "name": "Patrick hoesje",
+    "image": "img/patrick_hoesje.png",
+    "price": 31.50,
+    "stock": "Op voorraad"
+  },
+  {
+    "name": "Dexter deken",
+    "image": "img/dexter_deken.png",
+    "price": 31.50,
+    "stock": "Op voorraad"
+  },
+  {
+    "name": "unemployment pet",
+    "image": "img/unemployment_pet.png",
+    "price": 31.50,
+    "stock": "Op voorraad"
+  },
+  {
+    "name": "who is he hoodie",
+    "image": "img/whoishe_hoodie.png",
+    "price": 31.50,
+    "stock": "Op voorraad"
+  },
+  {
+    "name": "sonion t-shirt",
+    "image": "img/sonion_t-shirt.png",
+    "price": 31.50,
+    "stock": "Op voorraad"
+  }
+]

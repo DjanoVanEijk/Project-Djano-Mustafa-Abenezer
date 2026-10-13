@@ -37,19 +37,23 @@ if (countdownElement) {
 // en de gebruiker krijgt zichtbare feedback
 // ===========================================
 
-const addToCartButtons = document.querySelectorAll(".add-to-cart");
+document.addEventListener("click", (event) => {
+  if (!(event.target instanceof Element)) {
+    return;
+  }
 
-addToCartButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    // Feedback: knop verandert tijdelijk van tekst en kleur
-    button.textContent = "Toegevoegd ✓";
-    button.classList.add("clicked");
+  const button = event.target.closest(".add-to-cart");
+  if (!button) {
+    return;
+  }
 
-    setTimeout(() => {
-      button.textContent = "In winkelwagen";
-      button.classList.remove("clicked");
-    }, 1500);
-  });
+  button.textContent = "Toegevoegd ✓";
+  button.classList.add("clicked");
+
+  setTimeout(() => {
+    button.textContent = "In winkelwagen";
+    button.classList.remove("clicked");
+  }, 1500);
 });
 
 //============================================
@@ -61,7 +65,7 @@ addToCartButtons.forEach((button) => {
 // ==========================================
 
 const searchBar = document.querySelector(".search-bar");
-const productCards = document.querySelectorAll(".product-card");
+const productList = document.querySelector(".product-list");
 const noResultsMessage = document.querySelector("#no-results-message");
 const filterButtons = document.querySelectorAll(".filter-btn");
 
@@ -70,6 +74,7 @@ let currentCategory = "all";
 function updateProducts() {
     const searchTerm = searchBar ? searchBar.value.toLowerCase().trim() : "";
     let visibleCount = 0;
+    const productCards = productList ? productList.querySelectorAll(".product-card") : [];
 
     productCards.forEach((card) => {
         const productCategory = card.getAttribute("data-category");
@@ -97,6 +102,65 @@ function updateProducts() {
     }
 }
 
+function renderProducts(products) {
+    products.forEach((product) => {
+        const card = document.createElement("div");
+        card.className = "product-container product-card";
+
+        const image = document.createElement("img");
+        image.src = product.image;
+        image.alt = product.name;
+        image.className = "product-card__image";
+        image.width = 300;
+        image.height = 300;
+
+        const name = document.createElement("span");
+        name.className = "product-card__name";
+        name.textContent = product.name;
+
+        const price = document.createElement("span");
+        price.className = "product-card__price";
+        price.textContent = `$${Number(product.price).toFixed(2)}`;
+
+        const stock = document.createElement("span");
+        stock.className = "stock-badge";
+        stock.textContent = product.stock;
+
+        const button = document.createElement("button");
+        button.className = "btn-primary add-to-cart";
+        button.type = "button";
+        button.textContent = "In winkelwagen";
+
+        card.append(image, name, price, stock, button);
+        productList.insertBefore(card, noResultsMessage);
+    });
+
+    updateProducts();
+}
+
+if (productList && searchBar && noResultsMessage) {
+    fetch("producten.json")
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`Producten laden mislukt: ${response.status}`);
+            }
+
+            return response.json();
+        })
+        .then((products) => {
+            if (!Array.isArray(products)) {
+                throw new Error("producten.json bevat geen productarray.");
+            }
+
+            renderProducts(products);
+        })
+        .catch((error) => {
+            console.error(error);
+                noResultsMessage.textContent = "Producten konden niet worden geladen.";
+            noResultsMessage.style.display = "block";
+        });
+}
+
 if (searchBar) {
     searchBar.addEventListener("input", updateProducts);
 }
@@ -111,8 +175,6 @@ filterButtons.forEach((button) => {
         updateProducts();
     });
 });
-
-
 
 
 
