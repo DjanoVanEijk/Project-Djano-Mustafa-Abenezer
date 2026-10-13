@@ -19,13 +19,25 @@ main {
 }
 
 header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 1rem;
   border-bottom: 1px solid #e5e7eb;
   background-color: #ffffff;
   padding: 1rem 2rem;
+}
+
+.logo {
+  justify-self: start;
+}
+
+.search {
+  justify-self: center;
+}
+
+nav {
+  justify-self: end;
 }
 
 .product-page {
@@ -171,6 +183,8 @@ nav {
 
 @media (max-width: 700px) {
   header {
+    display: flex;
+    justify-content: space-between;
     flex-wrap: wrap;
     gap: 0.5rem;
   }
