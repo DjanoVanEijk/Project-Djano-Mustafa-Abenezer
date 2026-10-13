@@ -68,6 +68,11 @@ const searchBar = document.querySelector(".search-bar");
 const productList = document.querySelector(".product-list");
 const noResultsMessage = document.querySelector("#no-results-message");
 const filterButtons = document.querySelectorAll(".filter-btn");
+const initialSearchTerm = new URLSearchParams(window.location.search).get("q");
+
+if (searchBar && initialSearchTerm !== null) {
+    searchBar.value = initialSearchTerm;
+}
 
 let currentCategory = "all"; 
 
@@ -138,7 +143,7 @@ function renderProducts(products) {
     updateProducts();
 }
 
-if (productList && searchBar && noResultsMessage) {
+if (productList && searchBar && noResultsMessage && document.querySelector(".product-page")) {
     fetch("producten.json")
         .then((response) => {
             if (!response.ok) {
@@ -161,10 +166,6 @@ if (productList && searchBar && noResultsMessage) {
         });
 }
 
-if (searchBar) {
-    searchBar.addEventListener("input", updateProducts);
-}
-
 filterButtons.forEach((button) => {
     button.addEventListener("click", (e) => {
         filterButtons.forEach((btn) => btn.classList.remove("active"));
@@ -175,7 +176,6 @@ filterButtons.forEach((button) => {
         updateProducts();
     });
 });
-
 
 
 
