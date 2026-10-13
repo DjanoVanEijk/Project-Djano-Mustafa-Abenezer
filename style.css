@@ -31,7 +31,7 @@ header {
 .product-page {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
   padding-top: 1.5rem;
 }
 
@@ -166,8 +166,8 @@ nav {
 .filter-container {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin: 20px 0;
+  gap: 6px;
+  margin: 10px 0;
 }
 
 .filter-btn {
