@@ -20,13 +20,13 @@
   {
     "name": "Patrick hoesje",
     "image": "img/patrick_hoesje.png",
-    "price": 31.50,
+    "price": 51.75,
     "stock": "Op voorraad"
   },
   {
     "name": "Dexter deken",
     "image": "img/dexter_deken.png",
-    "price": 31.50,
+    "price": 50.25,
     "stock": "Op voorraad"
   },
   {
@@ -38,13 +38,13 @@
   {
     "name": "who is he hoodie",
     "image": "img/whoishe_hoodie.png",
-    "price": 31.50,
+    "price": 51.75,
     "stock": "Op voorraad"
   },
   {
     "name": "sonion t-shirt",
     "image": "img/sonion_t-shirt.png",
-    "price": 31.50,
+    "price": 50.25,
     "stock": "Op voorraad"
   }
 ]
