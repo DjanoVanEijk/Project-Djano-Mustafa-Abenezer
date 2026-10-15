@@ -9,42 +9,42 @@
     "name": "??? tas",
     "image": "img/clark_tas.png",
     "price": 50.25,
-    "stock": "Op voorraad"
+    "stock": "Nog maar 5 op voorraad"
   },
   {
     "name": "John Pork puzzel",
     "image": "img/johnpork_puzzel.png",
     "price": 31.50,
-    "stock": "Op voorraad"
+    "stock": "Nog maar 8 op voorraad"
   },
   {
     "name": "Patrick hoesje",
     "image": "img/patrick_hoesje.png",
     "price": 51.75,
-    "stock": "Op voorraad"
+    "stock": "Nog maar 3 op voorraad"
   },
   {
     "name": "Dexter deken",
     "image": "img/dexter_deken.png",
     "price": 50.25,
-    "stock": "Op voorraad"
+    "stock": "Nog maar 6 op voorraad"
   },
   {
     "name": "unemployment pet",
     "image": "img/unemployment_pet.png",
     "price": 31.50,
-    "stock": "Op voorraad"
+    "stock": "Nog maar 9 op voorraad"
   },
   {
     "name": "who is he hoodie",
     "image": "img/whoishe_hoodie.png",
     "price": 51.75,
-    "stock": "Op voorraad"
+    "stock": "Nog maar 4 op voorraad"
   },
   {
     "name": "sonion t-shirt",
     "image": "img/sonion_t-shirt.png",
     "price": 50.25,
-    "stock": "Op voorraad"
+    "stock": "Nog maar 7 op voorraad"
   }
 ]
