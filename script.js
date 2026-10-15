@@ -83,7 +83,7 @@ function updateProducts() {
 
     productCards.forEach((card) => {
         const productCategory = card.getAttribute("data-category");
-        const nameElement = card.querySelector(".product-card__name");
+        const nameElement = card.querySelector(".product-page");
         const productName = nameElement ? nameElement.textContent.toLowerCase() : "";
 
         const matchesCategory = (currentCategory === "all" || productCategory === currentCategory);
