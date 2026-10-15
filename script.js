@@ -67,7 +67,6 @@ document.addEventListener("click", (event) => {
 const searchBar = document.querySelector(".search-bar");
 const productList = document.querySelector(".product-list");
 const noResultsMessage = document.querySelector("#no-results-message");
-const filterButtons = document.querySelectorAll(".filter-btn");
 const initialSearchTerm = new URLSearchParams(window.location.search).get("q");
 
 if (searchBar && initialSearchTerm !== null) {
@@ -83,7 +82,7 @@ function updateProducts() {
 
     productCards.forEach((card) => {
         const productCategory = card.getAttribute("data-category");
-        const nameElement = card.querySelector(".product-page");
+        const nameElement = card.querySelector(".product-card__name");
         const productName = nameElement ? nameElement.textContent.toLowerCase() : "";
 
         const matchesCategory = (currentCategory === "all" || productCategory === currentCategory);
@@ -111,6 +110,7 @@ function renderProducts(products) {
     products.forEach((product) => {
         const card = document.createElement("div");
         card.className = "product-container product-card";
+        card.dataset.category = product.category;
 
         const image = document.createElement("img");
         image.src = product.image;
@@ -143,11 +143,41 @@ function renderProducts(products) {
     updateProducts();
 }
 
+//laat de de buttons bestaan
+function renderButtons(products) {
+    //variabelen voor de filter container
+    const filterContainer = document.querySelector(".filter-container");
+    if (!filterContainer) {
+        return;
+    }
+
+    //pak de info van de json op
+    const categories = [...new Set(products.map((product) => product.category))];
+    filterContainer.replaceChildren();
+
+    //css voor selecteren
+    const allButton = document.createElement("button");
+    allButton.className = "filter-btn active";
+    allButton.dataset.filter = "all";
+    allButton.textContent = "Alle producten";
+    filterContainer.append(allButton);
+
+    //maak de buttons aan
+    categories.forEach((category) => {
+        const button = document.createElement("button");
+        button.className = "filter-btn";
+        button.dataset.filter = category;
+        button.textContent = category;
+        filterContainer.append(button);
+    });
+}
+
 if (productList && searchBar && noResultsMessage && document.querySelector(".product-page")) {
     fetch("producten.json")
         .then((response) => {
             if (!response.ok) {
                 throw new Error(`Producten laden mislukt: ${response.status}`);
+                
             }
 
             return response.json();
@@ -156,8 +186,9 @@ if (productList && searchBar && noResultsMessage && document.querySelector(".pro
             if (!Array.isArray(products)) {
                 throw new Error("producten.json bevat geen productarray.");
             }
-
-            renderProducts(products);
+            const alleProducten = products
+            renderProducts(alleProducten);
+            renderButtons(alleProducten);
         })
         .catch((error) => {
             console.error(error);
@@ -166,18 +197,25 @@ if (productList && searchBar && noResultsMessage && document.querySelector(".pro
         });
 }
 
-filterButtons.forEach((button) => {
-    button.addEventListener("click", (e) => {
-        filterButtons.forEach((btn) => btn.classList.remove("active"));
+//laat de buttons werken
+document.querySelector(".filter-container")?.addEventListener("click", (event) => {
+    if (!(event.target)) {
+        return;
+    }
 
-        e.target.classList.add("active");
+    const button = event.target.closest(".filter-btn");
+    if (!button) {
+        return;
+    }
 
-        currentCategory = e.target.getAttribute("data-filter");
-        updateProducts();
+    document.querySelectorAll(".filter-btn").forEach((filterButton) => {
+        filterButton.classList.remove("active");
     });
+
+    button.classList.add("active");
+    currentCategory = button.getAttribute("data-filter");
+    updateProducts();
 });
-
-
 
 
 

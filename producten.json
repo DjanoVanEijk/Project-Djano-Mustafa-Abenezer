@@ -4,55 +4,55 @@
     "image": "img/chef_kopje.png",
     "price": 51.75,
     "stock": "Nog maar 2 op voorraad",
-    "product-type": "keuken"
+    "category": "keuken"
   },
   {
     "name": "??? tas",
     "image": "img/clark_tas.png",
     "price": 50.25,
     "stock": "Nog maar 5 op voorraad",
-    "product-type": "accessory"
+    "category": "accessory"
   },
   {
     "name": "John Pork puzzel",
     "image": "img/johnpork_puzzel.png",
     "price": 31.50,
     "stock": "Nog maar 8 op voorraad",
-    "product-type": "puzzel"
+    "category": "puzzel"
   },
   {
     "name": "Patrick hoesje",
     "image": "img/patrick_hoesje.png",
     "price": 51.75,
     "stock": "Nog maar 3 op voorraad",
-    "product-type": "accessory"
+    "category": "accessory"
   },
   {
     "name": "Dexter deken",
     "image": "img/dexter_deken.png",
     "price": 50.25,
     "stock": "Nog maar 6 op voorraad",
-    "product-type": "huishoud"
+    "category": "huishoud"
   },
   {
     "name": "unemployment pet",
     "image": "img/unemployment_pet.png",
     "price": 31.50,
     "stock": "Nog maar 9 op voorraad",
-     "product-type": "kleding"
+     "category": "kleding"
   },
   {
     "name": "who is he hoodie",
     "image": "img/whoishe_hoodie.png",
     "price": 51.75,
     "stock": "Nog maar 4 op voorraad",
-    "product-type": "kleding"
+    "category": "kleding"
   },
   {
     "name": "sonion t-shirt",
     "image": "img/sonion_t-shirt.png",
     "price": 50.25,
     "stock": "Nog maar 7 op voorraad",
-    "product-type": "kleding"
+    "category": "kleding"
   }
 ]
