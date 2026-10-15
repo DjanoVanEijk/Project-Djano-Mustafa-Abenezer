@@ -143,26 +143,21 @@ function renderProducts(products) {
     updateProducts();
 }
 
-//laat de de buttons bestaan
 function renderButtons(products) {
-    //variabelen voor de filter container
     const filterContainer = document.querySelector(".filter-container");
     if (!filterContainer) {
         return;
     }
 
-    //pak de info van de json op
     const categories = [...new Set(products.map((product) => product.category))];
     filterContainer.replaceChildren();
 
-    //css voor selecteren
     const allButton = document.createElement("button");
     allButton.className = "filter-btn active";
     allButton.dataset.filter = "all";
     allButton.textContent = "Alle producten";
     filterContainer.append(allButton);
 
-    //maak de buttons aan
     categories.forEach((category) => {
         const button = document.createElement("button");
         button.className = "filter-btn";
@@ -197,7 +192,6 @@ if (productList && searchBar && noResultsMessage && document.querySelector(".pro
         });
 }
 
-//laat de buttons werken
 document.querySelector(".filter-container")?.addEventListener("click", (event) => {
     if (!(event.target)) {
         return;
