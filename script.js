@@ -1,9 +1,4 @@
-// ===========================================
-// User Story 4 - Countdown timer (TODO: Djano)
-// Dit is nog een placeholder, geen echte countdown.
-// Hint: gebruik setInterval() en new Date() om
-// het verschil tussen nu en de eindtijd te berekenen.
-// ===========================================
+//countdown timer
 
 const countdownElement = document.getElementById("countdown");
 
@@ -31,11 +26,7 @@ if (countdownElement) {
   setInterval(updateCountdown, 1000);
 }
 
-// ===========================================
-// User Story 2 - Duidelijke call-to-actions
-// Klik op knop wordt afgehandeld met JavaScript
-// en de gebruiker krijgt zichtbare feedback
-// ===========================================
+//add to cart knop
 
 document.addEventListener("click", (event) => {
   if (!(event.target instanceof Element)) {
@@ -56,13 +47,7 @@ document.addEventListener("click", (event) => {
   }, 1500);
 });
 
-//============================================
-// User Story 3 en 6 - Producten zoeken en filteren (Mustafa)//
-//============================================
-
-// ==========================================
-// User Story 3 & 6 - Zoeken en Categorie Filter
-// ==========================================
+//zoeken / filteren
 
 const searchBar = document.querySelector(".search-bar");
 const productList = document.querySelector(".product-list");
@@ -105,6 +90,27 @@ function updateProducts() {
         }
     }
 }
+
+document.querySelector(".filter-container")?.addEventListener("click", (event) => {
+    if (!(event.target)) {
+        return;
+    }
+
+    const button = event.target.closest(".filter-btn");
+    if (!button) {
+        return;
+    }
+
+    document.querySelectorAll(".filter-btn").forEach((filterButton) => {
+        filterButton.classList.remove("active");
+    });
+
+    button.classList.add("active");
+    currentCategory = button.getAttribute("data-filter");
+    updateProducts();
+});
+
+//producten inladen van de json
 
 function renderProducts(products) {
     products.forEach((product) => {
@@ -191,25 +197,6 @@ if (productList && searchBar && noResultsMessage && document.querySelector(".pro
             noResultsMessage.style.display = "block";
         });
 }
-
-document.querySelector(".filter-container")?.addEventListener("click", (event) => {
-    if (!(event.target)) {
-        return;
-    }
-
-    const button = event.target.closest(".filter-btn");
-    if (!button) {
-        return;
-    }
-
-    document.querySelectorAll(".filter-btn").forEach((filterButton) => {
-        filterButton.classList.remove("active");
-    });
-
-    button.classList.add("active");
-    currentCategory = button.getAttribute("data-filter");
-    updateProducts();
-});
 
 
 
