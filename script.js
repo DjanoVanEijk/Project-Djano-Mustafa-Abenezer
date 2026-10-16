@@ -52,10 +52,16 @@ document.addEventListener("click", (event) => {
 const searchBar = document.querySelector(".search-bar");
 const productList = document.querySelector(".product-list");
 const noResultsMessage = document.querySelector("#no-results-message");
+const productPage = document.querySelector(".product-page");
+const searchForm = document.querySelector(".search");
 const initialSearchTerm = new URLSearchParams(window.location.search).get("q");
 
 if (searchBar && initialSearchTerm !== null) {
     searchBar.value = initialSearchTerm;
+
+    if (productPage) {
+        searchBar.focus();
+    }
 }
 
 let currentCategory = "all"; 
@@ -108,6 +114,22 @@ document.querySelector(".filter-container")?.addEventListener("click", (event) =
     button.classList.add("active");
     currentCategory = button.getAttribute("data-filter");
     updateProducts();
+});
+
+if (searchBar) {
+    searchBar.addEventListener("input", () => {
+        if (productPage) {
+            updateProducts();
+            return;
+        }
+
+        const query = new URLSearchParams({ q: searchBar.value });
+        window.location.href = `productpagina.html?${query.toString()}`;
+    });
+}
+
+searchForm?.addEventListener("submit", (event) => {
+    event.preventDefault();
 });
 
 //producten inladen van de json
@@ -173,7 +195,7 @@ function renderButtons(products) {
     });
 }
 
-if (productList && searchBar && noResultsMessage && document.querySelector(".product-page")) {
+if (productList && searchBar && noResultsMessage && productPage) {
     fetch("producten.json")
         .then((response) => {
             if (!response.ok) {
@@ -197,6 +219,5 @@ if (productList && searchBar && noResultsMessage && document.querySelector(".pro
             noResultsMessage.style.display = "block";
         });
 }
-
 
 
