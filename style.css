@@ -135,6 +135,12 @@ nav {
   font-weight: bold;
 }
 
+/* User Story 7 - kleuren van de voorraadmelding */
+.stock-ok     { color: #2e7d32; }
+.stock-medium { color: #ed6c02; }
+.stock-low    { color: #c62828; font-size: 15px; }
+.stock-out    { color: #777777; }
+
 :root {
   --primary-color: #2563eb;
   --primary-color-dark: #1d4ed8;
