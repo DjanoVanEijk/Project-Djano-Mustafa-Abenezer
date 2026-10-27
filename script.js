@@ -1,10 +1,5 @@
-// ===========================================
-// User Story 4 - Countdown timer (TODO: Djano)
-// Dit is nog een placeholder, geen echte countdown.
-// Hint: gebruik setInterval() en new Date() om
-// het verschil tussen nu en de eindtijd te berekenen.
-// ===========================================
- 
+//countdown timer
+
 const countdownElement = document.getElementById("countdown");
  
 if (countdownElement) {
@@ -30,13 +25,9 @@ if (countdownElement) {
   updateCountdown();
   setInterval(updateCountdown, 1000);
 }
- 
-// ===========================================
-// User Story 2 - Duidelijke call-to-actions
-// Klik op knop wordt afgehandeld met JavaScript
-// en de gebruiker krijgt zichtbare feedback
-// ===========================================
- 
+
+//add to cart knop
+
 document.addEventListener("click", (event) => {
   if (!(event.target instanceof Element)) {
     return;
@@ -55,23 +46,22 @@ document.addEventListener("click", (event) => {
     button.classList.remove("clicked");
   }, 1500);
 });
- 
-//============================================
-// User Story 3 en 6 - Producten zoeken en filteren (Mustafa)//
-//============================================
- 
-// ==========================================
-// User Story 3 & 6 - Zoeken en Categorie Filter
-// ==========================================
- 
+
+//zoeken / filteren
+
 const searchBar = document.querySelector(".search-bar");
 const productList = document.querySelector(".product-list");
 const noResultsMessage = document.querySelector("#no-results-message");
-const filterButtons = document.querySelectorAll(".filter-btn");
+const productPage = document.querySelector(".product-page");
+const searchForm = document.querySelector(".search");
 const initialSearchTerm = new URLSearchParams(window.location.search).get("q");
  
 if (searchBar && initialSearchTerm !== null) {
     searchBar.value = initialSearchTerm;
+
+    if (productPage) {
+        searchBar.focus();
+    }
 }
  
 let currentCategory = "all"; 
@@ -106,7 +96,42 @@ function updateProducts() {
         }
     }
 }
- 
+
+document.querySelector(".filter-container")?.addEventListener("click", (event) => {
+    if (!(event.target)) {
+        return;
+    }
+
+    const button = event.target.closest(".filter-btn");
+    if (!button) {
+        return;
+    }
+
+    document.querySelectorAll(".filter-btn").forEach((filterButton) => {
+        filterButton.classList.remove("active");
+    });
+
+    button.classList.add("active");
+    currentCategory = button.getAttribute("data-filter");
+    updateProducts();
+});
+
+if (searchBar) {
+    searchBar.addEventListener("input", () => {
+        if (productPage) {
+            updateProducts();
+            return;
+        }
+
+        const query = new URLSearchParams({ q: searchBar.value });
+        window.location.href = `productpagina.html?${query.toString()}`;
+    });
+}
+
+searchForm?.addEventListener("submit", (event) => {
+    event.preventDefault();
+});
+
 // ==========================================
 // User Story 7 - Voorraadmeldingen
 // De melding wordt bepaald door het getal "stock" uit producten.json
@@ -134,12 +159,15 @@ function showStock(badgeElement, stock) {
     badgeElement.textContent = info.text;
     badgeElement.className = "stock-badge " + info.className;
 }
- 
+
+//producten inladen van de json
+
 function renderProducts(products) {
     products.forEach((product) => {
         const card = document.createElement("div");
         card.className = "product-container product-card";
- 
+        card.dataset.category = product.category;
+
         const image = document.createElement("img");
         image.src = product.image;
         image.alt = product.name;
@@ -170,12 +198,37 @@ function renderProducts(products) {
  
     updateProducts();
 }
- 
-if (productList && searchBar && noResultsMessage && document.querySelector(".product-page")) {
+
+function renderButtons(products) {
+    const filterContainer = document.querySelector(".filter-container");
+    if (!filterContainer) {
+        return;
+    }
+
+    const categories = [...new Set(products.map((product) => product.category))];
+    filterContainer.replaceChildren();
+
+    const allButton = document.createElement("button");
+    allButton.className = "filter-btn active";
+    allButton.dataset.filter = "all";
+    allButton.textContent = "Alle producten";
+    filterContainer.append(allButton);
+
+    categories.forEach((category) => {
+        const button = document.createElement("button");
+        button.className = "filter-btn";
+        button.dataset.filter = category;
+        button.textContent = category;
+        filterContainer.append(button);
+    });
+}
+
+if (productList && searchBar && noResultsMessage && productPage) {
     fetch("producten.json")
         .then((response) => {
             if (!response.ok) {
                 throw new Error(`Producten laden mislukt: ${response.status}`);
+                
             }
  
             return response.json();
@@ -184,8 +237,9 @@ if (productList && searchBar && noResultsMessage && document.querySelector(".pro
             if (!Array.isArray(products)) {
                 throw new Error("producten.json bevat geen productarray.");
             }
- 
-            renderProducts(products);
+            const alleProducten = products
+            renderProducts(alleProducten);
+            renderButtons(alleProducten);
         })
         .catch((error) => {
             console.error(error);
@@ -193,17 +247,6 @@ if (productList && searchBar && noResultsMessage && document.querySelector(".pro
             noResultsMessage.style.display = "block";
         });
 }
- 
-filterButtons.forEach((button) => {
-    button.addEventListener("click", (e) => {
-        filterButtons.forEach((btn) => btn.classList.remove("active"));
- 
-        e.target.classList.add("active");
- 
-        currentCategory = e.target.getAttribute("data-filter");
-        updateProducts();
-    });
-});
  
 // ==========================================
 // User Story 7 - Voorraadmelding op de homepage
