@@ -227,3 +227,17 @@ nav {
   color: white;
   border-color: var(--primary-color);
 }
+
+.btn-search {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-search:hover {
+  background-color: var(--primary-color-dark);
+}

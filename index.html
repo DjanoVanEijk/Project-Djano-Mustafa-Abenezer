@@ -9,22 +9,23 @@
 <body>
   <header class="header">
     <a class="logo" href="index.html">Webshop</a>
-
+ 
     <form class="search" action="productpagina.html" method="get">
       <input type="search" class="search-bar" name="q" placeholder="Zoeken naar producten..." aria-label="Zoeken naar producten">
+      <button class="btn-search" type="submit">Zoek</button>
     </form>
-
+ 
     <nav class="nav">
       <a href="index.html">Home</a>
       <a href="productpagina.html">Producten</a>
       <a href="contactpagina.html">Contact</a>
     </nav>
   </header>
-
+ 
   <main>
     <h1 class="product-title">25% Korting</h1>
     <p class="countdown" role="timer">Actie eindigt over <span id="countdown">...</span></p>
-
+ 
     <div class="product-list">
       <div class="product-container product-card">
         <img src="img/chef_kopje.png" alt='me making poop kopje' class="product-card__image" width="300" height="300">
@@ -33,7 +34,7 @@
         <span class="stock-badge">Nog maar 2 op voorraad</span>
         <button class="btn-primary add-to-cart" type="button">In winkelwagen</button>
       </div>
-
+ 
       <div class="product-container product-card">
         <img src="img/clark_tas.png" alt='??? tas' class="product-card__image" width="300" height="300">
         <span class="product-card__name">??? tas</span>
@@ -41,7 +42,7 @@
         <span class="stock-badge">Nog maar 5 op voorraad</span>
         <button class="btn-primary add-to-cart" type="button">In winkelwagen</button>
       </div>
-
+ 
       <div class="product-container product-card">
         <img src="img/johnpork_puzzel.png" alt='John Pork puzzel' class="product-card__image" width="300" height="300">
         <span class="product-card__name">John Pork puzzel</span>
@@ -49,11 +50,11 @@
         <span class="stock-badge">Nog maar 8 op voorraad</span>
         <button class="btn-primary add-to-cart" type="button">In winkelwagen</button>
       </div>
-
+ 
       <p id="no-results-message">Geen producten gevonden.</p>
     </div>
   </main>
-
+ 
   <script src="script.js"></script>
 </body>
 </html>
