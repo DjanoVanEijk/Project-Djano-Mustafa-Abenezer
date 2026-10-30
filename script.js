@@ -280,12 +280,3 @@ if (!document.querySelector(".product-page")) {
     }
 }
 
-filterButtons.forEach((button) => {
-    button.addEventListener("click"), (e) => {
-        filterButtons.forEach((btn) => btn.classList.remove("active"));
- 
-        e.target.classList.add("active");
- 
-        currentCategory = e.target.getAttribute("data-filter");
-        updateProducts();
-    }});
