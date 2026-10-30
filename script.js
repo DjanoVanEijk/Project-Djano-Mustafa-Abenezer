@@ -88,6 +88,7 @@ function updateProducts() {
         }
     });
  
+
     if (noResultsMessage) {
         if (visibleCount === 0) {
             noResultsMessage.style.display = "block";
