@@ -55,6 +55,83 @@ const noResultsMessage = document.querySelector("#no-results-message");
 const productPage = document.querySelector(".product-page");
 const searchForm = document.querySelector(".search");
 const initialSearchTerm = new URLSearchParams(window.location.search).get("q");
+const favoritesStorageKey = "favorites";
+let favorites = [];
+
+try {
+    const storedFavorites = localStorage.getItem(favoritesStorageKey);
+    if (storedFavorites !== null) {
+        const parsedFavorites = JSON.parse(storedFavorites);
+        if (Array.isArray(parsedFavorites) && parsedFavorites.every((favorite) => typeof favorite === "string")) {
+            favorites = parsedFavorites;
+        } else {
+            console.error("Opgeslagen favorieten hebben een ongeldig formaat.");
+        }
+    }
+} catch (error) {
+    console.error("Favorieten konden niet uit localStorage worden geladen.", error);
+}
+
+function saveFavorites() {
+    try {
+        localStorage.setItem(favoritesStorageKey, JSON.stringify(favorites));
+    } catch (error) {
+        console.error("Favorieten konden niet in localStorage worden opgeslagen.", error);
+    }
+}
+
+function getProductId(card) {
+    const nameElement = card.querySelector(".product-card__name");
+    return card.dataset.productId || (nameElement ? nameElement.textContent.trim() : "");
+}
+
+function updateFavoriteButtons() {
+    document.querySelectorAll(".product-card").forEach((card) => {
+        const productId = getProductId(card);
+        const favoriteButton = card.querySelector(".favorite-button");
+        if (!favoriteButton) {
+            return;
+        }
+
+        const isFavorite = favorites.includes(productId);
+        favoriteButton.classList.toggle("is-favorite", isFavorite);
+        favoriteButton.textContent = isFavorite ? "♥" : "♡";
+        favoriteButton.setAttribute("aria-pressed", String(isFavorite));
+        favoriteButton.setAttribute(
+            "aria-label",
+            isFavorite ? "Verwijderen uit favorieten" : "Toevoegen aan favorieten"
+        );
+    });
+}
+
+document.addEventListener("click", (event) => {
+    if (!(event.target instanceof Element)) {
+        return;
+    }
+
+    const button = event.target.closest(".favorite-button");
+    if (!button) {
+        return;
+    }
+
+    const card = button.closest(".product-card");
+    const productId = card ? getProductId(card) : "";
+    if (!productId) {
+        return;
+    }
+
+    if (favorites.includes(productId)) {
+        favorites = favorites.filter((favorite) => favorite !== productId);
+    } else {
+        favorites.push(productId);
+    }
+
+    saveFavorites();
+    updateFavoriteButtons();
+    updateProducts();
+});
+
+updateFavoriteButtons();
  
 if (searchBar && initialSearchTerm !== null) {
     searchBar.value = initialSearchTerm;
@@ -76,7 +153,11 @@ function updateProducts() {
         const nameElement = card.querySelector(".product-card__name");
         const productName = nameElement ? nameElement.textContent.toLowerCase() : "";
  
-        const matchesCategory = (currentCategory === "all" || productCategory === currentCategory);
+        const matchesCategory =
+            currentCategory === "all" ||
+            (currentCategory === "favorites"
+                ? favorites.includes(getProductId(card))
+                : productCategory === currentCategory);
  
         const matchesSearch = productName.includes(searchTerm);
  
@@ -98,7 +179,7 @@ function updateProducts() {
 }
 
 document.querySelector(".filter-container")?.addEventListener("click", (event) => {
-    if (!(event.target)) {
+    if (!(event.target instanceof Element)) {
         return;
     }
 
@@ -191,11 +272,23 @@ function renderProducts(products) {
         button.className = "btn-primary add-to-cart";
         button.type = "button";
         button.textContent = "In winkelwagen";
+
+        const favoriteButton = document.createElement("button");
+        favoriteButton.className = "favorite-button";
+        favoriteButton.type = "button";
+        favoriteButton.textContent = "♡";
+        favoriteButton.setAttribute("aria-label", "Toevoegen aan favorieten");
+
+        const actions = document.createElement("div");
+        actions.className = "product-card__actions";
+        actions.append(button, favoriteButton);
+        card.dataset.productId = product.name;
  
-        card.append(image, name, price, stock, button);
+        card.append(image, name, price, stock, actions);
         productList.insertBefore(card, noResultsMessage);
     });
  
+    updateFavoriteButtons();
     updateProducts();
 }
 
@@ -214,6 +307,12 @@ function renderButtons(products) {
     allButton.textContent = "Alle producten";
     filterContainer.append(allButton);
 
+    const favoritesButton = document.createElement("button");
+    favoritesButton.className = "filter-btn";
+    favoritesButton.dataset.filter = "favorites";
+    favoritesButton.textContent = "Favorieten";
+    filterContainer.append(favoritesButton);
+
     categories.forEach((category) => {
         const button = document.createElement("button");
         button.className = "filter-btn";
@@ -223,7 +322,13 @@ function renderButtons(products) {
     });
 }
 
+const loader = document.getElementById('loading-message');
+
 if (productList && searchBar && noResultsMessage && productPage) {
+    if (loader) {
+        loader.style.display = "block";
+    }
+
     fetch("producten.json")
         .then((response) => {
             if (!response.ok) {
@@ -237,13 +342,19 @@ if (productList && searchBar && noResultsMessage && productPage) {
             if (!Array.isArray(products)) {
                 throw new Error("producten.json bevat geen productarray.");
             }
-            const alleProducten = products
+            const alleProducten = products;
             renderProducts(alleProducten);
             renderButtons(alleProducten);
+            if (loader) {
+                loader.style.display = "none";
+            }
         })
         .catch((error) => {
             console.error(error);
-                noResultsMessage.textContent = "Producten konden niet worden geladen.";
+            if (loader) {
+                loader.style.display = "none";
+            }
+            noResultsMessage.textContent = "Producten konden niet worden geladen.";
             noResultsMessage.style.display = "block";
         });
 }
@@ -279,4 +390,3 @@ if (!document.querySelector(".product-page")) {
             .catch((error) => console.error(error));
     }
 }
-
