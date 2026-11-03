@@ -194,7 +194,11 @@ function renderProducts(products) {
         button.textContent = "In winkelwagen";
  
         card.append(image, name, price, stock, button);
-        productList.insertBefore(card, noResultsMessage);
+        if (noResultsMessage) {
+            productList.insertBefore(card, noResultsMessage);
+        }else {
+            productList.appendChild(card);
+        }
     });
  
     updateProducts();
@@ -225,7 +229,7 @@ function renderButtons(products) {
 }
 
 if (productList && searchBar && noResultsMessage && productPage) {
-    fetch("producten.json")
+    fetch("https://dummyjson.com/products?limit=12")
         .then((response) => {
             if (!response.ok) {
                 throw new Error(`Producten laden mislukt: ${response.status}`);
@@ -234,17 +238,25 @@ if (productList && searchBar && noResultsMessage && productPage) {
  
             return response.json();
         })
-        .then((products) => {
-            if (!Array.isArray(products)) {
-                throw new Error("producten.json bevat geen productarray.");
+        .then((data) => {
+            const rawProducts = data.products;
+            if (!Array.isArray(rawProducts)) {
+                throw new Error("De API-data bevat geen productarray.");
             }
-            const alleProducten = products
+
+            const alleProducten = rawProducts.map(item => ({
+                name: item.title,
+                image: item.thumbnail || (item.images && item.images[0]) || "",
+                price: item.price,
+                stock: item.stock,
+                category: item.category,
+        }));
             renderProducts(alleProducten);
             renderButtons(alleProducten);
         })
         .catch((error) => {
             console.error(error);
-                noResultsMessage.textContent = "Producten konden niet worden geladen.";
+            noResultsMessage.textContent = "Oeps! De producten konden niet worden geladen vanuit de externe bron. Probeer het later opnieuw.";
             noResultsMessage.style.display = "block";
         });
 }
@@ -259,9 +271,10 @@ if (!document.querySelector(".product-page")) {
     const homeCards = document.querySelectorAll(".product-card");
  
     if (homeCards.length > 0) {
-        fetch("producten.json")
-            .then((response) => response.json()) 
-            .then((products) => {
+        fetch("https://dummyjson.com/products?limit=12")
+            .then((response) => response.json())
+            .then((data) => {
+                const products = data.products;
                 homeCards.forEach((card) => {
                     const nameElement = card.querySelector(".product-card__name");
                     const badge = card.querySelector(".stock-badge");
@@ -270,7 +283,7 @@ if (!document.querySelector(".product-page")) {
                         return;
                     }
  
-                    const product = products.find((p) => p.name === nameElement.textContent.trim());
+                    const product = products.find((p) => p.title.toLowerCase() === nameElement.textContent.trim().toLowerCase());
  
                     if (product) {
                         showStock(badge, product.stock);
