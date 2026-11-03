@@ -164,7 +164,38 @@ nav {
   background-color: #2e7d32;
 }
 
+.favorite-button {
+  width: 44px;
+  height: 33px;
+  padding: 0;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.favorite-button:hover {
+  background-color: var(--primary-color-dark);
+}
+
+.product-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 #no-results-message {
+  display: none;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  color: #666;
+  margin-top: 20px;
+}
+
+#loading-message {
   display: none;
   width: 100%;
   text-align: center;
