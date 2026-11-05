@@ -229,34 +229,28 @@ function renderButtons(products) {
 }
 
 if (productList && searchBar && noResultsMessage && productPage) {
-    fetch("https://dummyjson.com/products?limit=12")
+    fetch ("producten.json")
         .then((response) => {
             if (!response.ok) {
                 throw new Error(`Producten laden mislukt: ${response.status}`);
-                
+               
             }
  
             return response.json();
         })
-        .then((data) => {
-            const rawProducts = data.products;
-            if (!Array.isArray(rawProducts)) {
-                throw new Error("De API-data bevat geen productarray.");
+        .then((products) => {
+            if (!Array.isArray(products)) {
+                throw new Error("producten.json bevat geen productarray.");
             }
-
-            const alleProducten = rawProducts.map(item => ({
-                name: item.title,
-                image: item.thumbnail || (item.images && item.images[0]) || "",
-                price: item.price,
-                stock: item.stock,
-                category: item.category,
-        }));
+            const alleProducten = products;
             renderProducts(alleProducten);
             renderButtons(alleProducten);
+           
         })
         .catch((error) => {
             console.error(error);
-            noResultsMessage.textContent = "Oeps! De producten konden niet worden geladen vanuit de externe bron. Probeer het later opnieuw.";
+            
+            noResultsMessage.textContent = "Producten konden niet worden geladen.";
             noResultsMessage.style.display = "block";
         });
 }
@@ -271,7 +265,7 @@ if (!document.querySelector(".product-page")) {
     const homeCards = document.querySelectorAll(".product-card");
  
     if (homeCards.length > 0) {
-        fetch("https://dummyjson.com/products?limit=12")
+        fetch("producten.json")
             .then((response) => response.json())
             .then((data) => {
                 const products = data.products;
