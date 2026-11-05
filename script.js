@@ -285,8 +285,12 @@ function renderProducts(products) {
         actions.append(button, favoriteButton);
         card.dataset.productId = product.name;
  
-        card.append(image, name, price, stock, actions);
-        productList.insertBefore(card, noResultsMessage);
+        card.append(image, name, price, stock, button);
+        if (noResultsMessage) {
+            productList.insertBefore(card, noResultsMessage);
+        }else {
+            productList.appendChild(card);
+        }
     });
  
     updateFavoriteButtons();
@@ -331,12 +335,16 @@ if (productList && searchBar && noResultsMessage && productPage) {
     }
 
     fetch("producten.json")
+// ==========================================
+// User Story 8 - Externe API voor zowel Homepage als Productpagina
+// ==========================================
+
+const isProductPagina = window.location.pathname.includes("productpagina.html");
+
+if (!isProductPagina && productList) {
+    fetch("https://dummyjson.com/products?limit=3")
         .then((response) => {
-            if (!response.ok) {
-                throw new Error(`Producten laden mislukt: ${response.status}`);
-                
-            }
- 
+            if (!response.ok) throw new Error(`Fout bij laden API: ${response.status}`);
             return response.json();
         })
         .then((products) => {
@@ -357,37 +365,62 @@ if (productList && searchBar && noResultsMessage && productPage) {
             }
             noResultsMessage.textContent = "Producten konden niet worden geladen.";
             noResultsMessage.style.display = "block";
+        .then((data) => {
+            const apiProducten = data.products.map((item, index) => {
+
+                let stockVal = item.stock;
+                if (index === 0) stockVal = 2; 
+                if (index === 1) stockVal = 5;
+                if (index === 2) stockVal = 0;
+
+                return {
+                    name: item.title,
+                    image: item.thumbnail || (item.images && item.images[0]) || "",
+                    price: item.price,
+                    stock: item.stock,
+                    stock: stockVal, 
+                    category: item.category || "Overig",
+            };
+
+            });
+
+            renderProducts(apiProducten);
+        })
+        .catch((error) => {
+            console.error(error);
+            if (noResultsMessage) {
+                noResultsMessage.textContent = "Oeps! De producten konden niet worden geladen.";
+                noResultsMessage.style.display = "block";
+            }
         });
-}
+}else {
  
 // ==========================================
 // User Story 7 - Voorraadmelding op de homepage
 // De kaarten staan hier nog in de HTML, maar de voorraadmelding
 // halen we uit producten.json (zoeken op productnaam).
 // ==========================================
- 
-if (!document.querySelector(".product-page")) {
-    const homeCards = document.querySelectorAll(".product-card");
- 
-    if (homeCards.length > 0) {
-        fetch("producten.json")
-            .then((response) => response.json()) 
-            .then((products) => {
-                homeCards.forEach((card) => {
-                    const nameElement = card.querySelector(".product-card__name");
-                    const badge = card.querySelector(".stock-badge");
- 
-                    if (!nameElement || !badge) {
-                        return;
-                    }
- 
-                    const product = products.find((p) => p.name === nameElement.textContent.trim());
- 
-                    if (product) {
-                        showStock(badge, product.stock);
-                    }
-                });
-            })
-            .catch((error) => console.error(error));
-    }
+
+if (isProductPagina && productList) {
+    fetch("producten.json")
+        .then((response) => {
+            if (!response.ok) throw new Error(`Producten laden mislukt: ${response.status}`);
+            return response.json();
+        })
+        .then((lokaleProducten) => {
+            if (!Array.isArray(lokaleProducten)) {
+                throw new Error("producten.json bevat geen productarray.");
+            }
+
+            renderProducts(lokaleProducten);
+            renderButtons(lokaleProducten);
+        })
+        .catch((error) => {
+            console.error(error);
+            if (noResultsMessage) {
+                noResultsMessage.textContent = "Producten konden niet worden geladen.";
+                noResultsMessage.style.display = "block";
+            }
+        });
+}
 }
