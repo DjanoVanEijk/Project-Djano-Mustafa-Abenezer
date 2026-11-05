@@ -37,8 +37,18 @@ header {
 }
 
 nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   justify-self: end;
 }
+
+nav a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
 
 .product-page {
   display: flex;
@@ -47,10 +57,6 @@ nav {
   padding-top: 1.5rem;
 }
 
-nav {
-  display: flex;
-  gap: 1rem;
-}
 
 .logo {
   font-size: 24px;
@@ -276,7 +282,7 @@ body {
   color: var(--text-color);
 }
 
-.header, .nav, .header a {
+.header, .nav, .header a, .nav a {
   background-color: var(--bg-color);
   color: var(--text-color);
 }
