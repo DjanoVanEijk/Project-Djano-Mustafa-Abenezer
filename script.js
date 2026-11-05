@@ -285,7 +285,7 @@ function renderProducts(products) {
         actions.append(button, favoriteButton);
         card.dataset.productId = product.name;
  
-        card.append(image, name, price, stock, button);
+        card.append(image, name, price, stock, actions);
         if (noResultsMessage) {
             productList.insertBefore(card, noResultsMessage);
         }else {
@@ -327,73 +327,61 @@ function renderButtons(products) {
     });
 }
 
-const loader = document.getElementById('loading-message');
 
-if (productList && searchBar && noResultsMessage && productPage) {
-    if (loader) {
-        loader.style.display = "block";
-    }
 
-    fetch("producten.json")
+   
 // ==========================================
 // User Story 8 - Externe API voor zowel Homepage als Productpagina
 // ==========================================
 
 const isProductPagina = window.location.pathname.includes("productpagina.html");
+const loader = document.getElementById('loading-message');
 
 if (!isProductPagina && productList) {
+    if (loader) {
+        loader.style.display = "block";
+    }
+
     fetch("https://dummyjson.com/products?limit=3")
         .then((response) => {
             if (!response.ok) throw new Error(`Fout bij laden API: ${response.status}`);
             return response.json();
         })
-        .then((products) => {
-            if (!Array.isArray(products)) {
-                throw new Error("producten.json bevat geen productarray.");
-            }
-            const alleProducten = products;
-            renderProducts(alleProducten);
-            renderButtons(alleProducten);
-            if (loader) {
-                loader.style.display = "none";
-            }
-        })
-        .catch((error) => {
-            console.error(error);
-            if (loader) {
-                loader.style.display = "none";
-            }
-            noResultsMessage.textContent = "Producten konden niet worden geladen.";
-            noResultsMessage.style.display = "block";
         .then((data) => {
             const apiProducten = data.products.map((item, index) => {
-
                 let stockVal = item.stock;
                 if (index === 0) stockVal = 2; 
                 if (index === 1) stockVal = 5;
                 if (index === 2) stockVal = 0;
 
                 return {
+                    id: item.id,
                     name: item.title,
                     image: item.thumbnail || (item.images && item.images[0]) || "",
                     price: item.price,
-                    stock: item.stock,
                     stock: stockVal, 
                     category: item.category || "Overig",
-            };
-
+                };
             });
 
             renderProducts(apiProducten);
+            renderButtons(apiProducten);
+
+            if (loader) {
+                loader.style.display = "none";
+            }
         })
         .catch((error) => {
             console.error(error);
+            if (loader) {
+                loader.style.display = "none";
+            }
             if (noResultsMessage) {
                 noResultsMessage.textContent = "Oeps! De producten konden niet worden geladen.";
                 noResultsMessage.style.display = "block";
             }
         });
-}else {
+}
  
 // ==========================================
 // User Story 7 - Voorraadmelding op de homepage
@@ -402,6 +390,10 @@ if (!isProductPagina && productList) {
 // ==========================================
 
 if (isProductPagina && productList) {
+    if (loader) {
+        loader.style.display = "block";
+    }
+
     fetch("producten.json")
         .then((response) => {
             if (!response.ok) throw new Error(`Producten laden mislukt: ${response.status}`);
@@ -414,13 +406,19 @@ if (isProductPagina && productList) {
 
             renderProducts(lokaleProducten);
             renderButtons(lokaleProducten);
+
+            if (loader) {
+                loader.style.display = "none";
+            }
         })
         .catch((error) => {
             console.error(error);
+            if (loader) {
+                loader.style.display = "none";
+            }
             if (noResultsMessage) {
                 noResultsMessage.textContent = "Producten konden niet worden geladen.";
                 noResultsMessage.style.display = "block";
             }
         });
-}
-}
+    }
