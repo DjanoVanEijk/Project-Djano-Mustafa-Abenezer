@@ -422,3 +422,24 @@ if (isProductPagina && productList) {
             }
         });
     }
+
+
+    // Dark Mode Toggle
+
+    const themeToggleBtn = document.getElementById("theme-toggle");
+
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark-mode");
+        if (themeToggleBtn) themeToggleBtn.textContent = "☀️ Light Mode";
+    }
+
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+
+            const isDarkMode = document.body.classList.contains("dark-mode");
+            localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+
+            themeToggleBtn.textContent = isDarkMode ? "☀️ Light Mode" : "🌙 Dark Mode";
+        });
+    }
