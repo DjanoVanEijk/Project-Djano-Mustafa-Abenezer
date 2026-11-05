@@ -228,8 +228,31 @@ function renderButtons(products) {
     });
 }
 
-if (productList && searchBar && noResultsMessage && productPage) {
-    fetch ("producten.json")
+if (!document.querySelector(".product-page") && productList) {
+
+    Promise.all([
+        fetch("producten.json").then((response) => response.json()),
+        fetch("https://dummyjson.com/products?limit=3").then((response) => response.json())
+    ])
+    .then(([lokaleProducten, apiData]) => {
+        const eigenDrie = lokaleProducten.slice(0, 3);
+
+        const apiProducten = apiData.products.map(item => ( {
+            name: item.title,
+            image: item.thumbnail || (item.images && item.images[0]) || "",
+            price: item.price,
+            stock: item.stock,
+            category: item.category || "Overig",
+        }));
+
+        const alleProducten = [...eigenDrie, ...apiProducten];
+
+        renderProducts(alleProducten);
+        renderButtons(alleProducten);
+    })
+
+
+    fetch ("https://dummyjson.com/products?limit=12")
         .then((response) => {
             if (!response.ok) {
                 throw new Error(`Producten laden mislukt: ${response.status}`);
@@ -238,11 +261,20 @@ if (productList && searchBar && noResultsMessage && productPage) {
  
             return response.json();
         })
-        .then((products) => {
-            if (!Array.isArray(products)) {
-                throw new Error("producten.json bevat geen productarray.");
+        .then((data) => {
+            const rawProducts = data.products;
+            if (!Array.isArray(rawProducts)) {
+                throw new Error("De API data bevat geen productarray.");
             }
-            const alleProducten = products;
+
+            const alleProducten = rawProducts.map(item => ({
+                name: item.title,
+                image: item.thumbnail || (item.images && item.images[0]) || "",
+                price: item.price,
+                stock: item.stock,
+                category: item.category || "Overig",
+            }));
+
             renderProducts(alleProducten);
             renderButtons(alleProducten);
            
@@ -250,9 +282,11 @@ if (productList && searchBar && noResultsMessage && productPage) {
         .catch((error) => {
             console.error(error);
             
-            noResultsMessage.textContent = "Producten konden niet worden geladen.";
+            if (noResultsMessage) {
+            noResultsMessage.textContent = " Oeps! Producten konden niet worden geladen.";
             noResultsMessage.style.display = "block";
-        });
+        }
+    });
 }
  
 // ==========================================
@@ -265,7 +299,7 @@ if (!document.querySelector(".product-page")) {
     const homeCards = document.querySelectorAll(".product-card");
  
     if (homeCards.length > 0) {
-        fetch("producten.json")
+        fetch("https://dummyjson.com/products?limit=12")
             .then((response) => response.json())
             .then((data) => {
                 const products = data.products;
