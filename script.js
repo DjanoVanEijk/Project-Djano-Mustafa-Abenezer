@@ -430,7 +430,7 @@ if (isProductPagina && productList) {
 
     if (localStorage.getItem("theme") === "dark") {
         document.body.classList.add("dark-mode");
-        if (themeToggleBtn) themeToggleBtn.textContent = "☀️ Light Mode";
+        if (themeToggleBtn) themeToggleBtn.textContent = "☀️";
     }
 
     if (themeToggleBtn) {
@@ -440,6 +440,6 @@ if (isProductPagina && productList) {
             const isDarkMode = document.body.classList.contains("dark-mode");
             localStorage.setItem("theme", isDarkMode ? "dark" : "light");
 
-            themeToggleBtn.textContent = isDarkMode ? "☀️ Light Mode" : "🌙 Dark Mode";
+            themeToggleBtn.textContent = isDarkMode ? "☀️" : "🌙";
         });
     }
