@@ -317,3 +317,30 @@ body {
 .theme-toggle-btn:active {
   transform: translateY(0);
 }
+
+.sort-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.sort-container label {
+  font-weight: bold;
+}
+
+.sort-select {
+  padding: 8px 14px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background-color: #ffffff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+body.dark-mode .sort-select {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border-color: #555555;
+}
