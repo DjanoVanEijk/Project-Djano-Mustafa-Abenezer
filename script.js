@@ -188,6 +188,7 @@ document.querySelector(".filter-container")?.addEventListener("click", (event) =
     if (!button) {
         return;
     }
+<<<<<<< HEAD
  
     document.querySelectorAll(".filter-btn").forEach((filterButton) => {
         filterButton.classList.remove("active");
@@ -195,6 +196,21 @@ document.querySelector(".filter-container")?.addEventListener("click", (event) =
  
     button.classList.add("active");
     currentCategory = button.getAttribute("data-filter");
+=======
+
+    const isActive = button.classList.contains("active");
+    document.querySelectorAll(".filter-btn").forEach((filterButton) => {
+        filterButton.classList.remove("active");
+    });
+
+    if (isActive) {
+        currentCategory = "all";
+    } else {
+        button.classList.add("active");
+        currentCategory = button.getAttribute("data-filter");
+    }
+
+>>>>>>> a0de7b4cda24be1779d6acc84c3c6bf32403e048
     updateProducts();
 });
  
@@ -382,6 +398,7 @@ function renderButtons(products) {
  
     const categories = [...new Set(products.map((product) => product.category))];
     filterContainer.replaceChildren();
+<<<<<<< HEAD
  
     const allButton = document.createElement("button");
     allButton.className = "filter-btn active";
@@ -389,6 +406,9 @@ function renderButtons(products) {
     allButton.textContent = "Alle producten";
     filterContainer.append(allButton);
  
+=======
+
+>>>>>>> a0de7b4cda24be1779d6acc84c3c6bf32403e048
     const favoritesButton = document.createElement("button");
     favoritesButton.className = "filter-btn";
     favoritesButton.dataset.filter = "favorites";
@@ -507,7 +527,7 @@ if (isProductPagina && productList) {
  
     if (localStorage.getItem("theme") === "dark") {
         document.body.classList.add("dark-mode");
-        if (themeToggleBtn) themeToggleBtn.textContent = "☀️ Light Mode";
+        if (themeToggleBtn) themeToggleBtn.textContent = "☀️";
     }
  
     if (themeToggleBtn) {
@@ -516,7 +536,12 @@ if (isProductPagina && productList) {
  
             const isDarkMode = document.body.classList.contains("dark-mode");
             localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+<<<<<<< HEAD
  
             themeToggleBtn.textContent = isDarkMode ? "☀️ Light Mode" : "🌙 Dark Mode";
+=======
+
+            themeToggleBtn.textContent = isDarkMode ? "☀️" : "🌙";
+>>>>>>> a0de7b4cda24be1779d6acc84c3c6bf32403e048
         });
     }
