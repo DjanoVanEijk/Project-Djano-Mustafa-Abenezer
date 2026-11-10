@@ -1,5 +1,6 @@
 //countdown timer
  
+
 const countdownElement = document.getElementById("countdown");
  
 if (countdownElement) {
@@ -26,8 +27,10 @@ if (countdownElement) {
   setInterval(updateCountdown, 1000);
 }
  
+
 //add to cart knop
  
+
 document.addEventListener("click", (event) => {
   if (!(event.target instanceof Element)) {
     return;
@@ -179,25 +182,17 @@ function updateProducts() {
     }
 }
  
+
 document.querySelector(".filter-container")?.addEventListener("click", (event) => {
     if (!(event.target instanceof Element)) {
         return;
     }
  
+
     const button = event.target.closest(".filter-btn");
     if (!button) {
         return;
     }
-<<<<<<< HEAD
- 
-    document.querySelectorAll(".filter-btn").forEach((filterButton) => {
-        filterButton.classList.remove("active");
-    });
- 
-    button.classList.add("active");
-    currentCategory = button.getAttribute("data-filter");
-=======
-
     const isActive = button.classList.contains("active");
     document.querySelectorAll(".filter-btn").forEach((filterButton) => {
         filterButton.classList.remove("active");
@@ -210,10 +205,10 @@ document.querySelector(".filter-container")?.addEventListener("click", (event) =
         currentCategory = button.getAttribute("data-filter");
     }
 
->>>>>>> a0de7b4cda24be1779d6acc84c3c6bf32403e048
     updateProducts();
 });
  
+
 if (searchBar) {
     searchBar.addEventListener("input", () => {
         if (productPage) {
@@ -221,15 +216,18 @@ if (searchBar) {
             return;
         }
  
+
         const query = new URLSearchParams({ q: searchBar.value });
         window.location.href = `productpagina.html?${query.toString()}`;
     });
 }
  
+
 searchForm?.addEventListener("submit", (event) => {
     event.preventDefault();
 });
  
+
 // ==========================================
 // Bonus - Sorteeropties
 // Een keuzemenu waarmee je de producten kunt sorteren.
@@ -332,8 +330,10 @@ function showStock(badgeElement, stock) {
     badgeElement.className = "stock-badge " + info.className;
 }
  
+
 //producten inladen van de json
  
+
 function renderProducts(products) {
     products.forEach((product, index) => {
         const card = document.createElement("div");
@@ -342,6 +342,7 @@ function renderProducts(products) {
         card.dataset.price = product.price;
         card.dataset.index = index;
  
+
         const image = document.createElement("img");
         image.src = product.image;
         image.alt = product.name;
@@ -390,25 +391,23 @@ function renderProducts(products) {
     updateProducts();
 }
  
+
 function renderButtons(products) {
     const filterContainer = document.querySelector(".filter-container");
     if (!filterContainer) {
         return;
     }
  
+
     const categories = [...new Set(products.map((product) => product.category))];
     filterContainer.replaceChildren();
-<<<<<<< HEAD
  
     const allButton = document.createElement("button");
     allButton.className = "filter-btn active";
     allButton.dataset.filter = "all";
     allButton.textContent = "Alle producten";
     filterContainer.append(allButton);
- 
-=======
 
->>>>>>> a0de7b4cda24be1779d6acc84c3c6bf32403e048
     const favoritesButton = document.createElement("button");
     favoritesButton.className = "filter-btn";
     favoritesButton.dataset.filter = "favorites";
@@ -427,6 +426,8 @@ function renderButtons(products) {
  
  
    
+const LOAD_DELAY_MS = 0;
+
 // ==========================================
 // User Story 8 - Externe API voor zowel Homepage als Productpagina
 // ==========================================
@@ -436,7 +437,7 @@ const loader = document.getElementById('loading-message');
  
 if (!isProductPagina && productList) {
     if (loader) {
-        loader.style.display = "block";
+        loader.style.display = "flex";
     }
  
     fetch("https://dummyjson.com/products?limit=3")
@@ -444,6 +445,7 @@ if (!isProductPagina && productList) {
             if (!response.ok) throw new Error(`Fout bij laden API: ${response.status}`);
             return response.json();
         })
+        .then((products) => new Promise((resolve) => setTimeout(() => resolve(products), LOAD_DELAY_MS)))
         .then((data) => {
             const apiProducten = data.products.map((item, index) => {
                 let stockVal = item.stock;
@@ -470,12 +472,14 @@ if (!isProductPagina && productList) {
         })
         .catch((error) => {
             console.error(error);
-            if (loader) {
-                loader.style.display = "none";
-            }
             if (noResultsMessage) {
                 noResultsMessage.textContent = "Oeps! De producten konden niet worden geladen.";
                 noResultsMessage.style.display = "block";
+            }
+        })
+        .finally(() => {
+            if (loader) {
+                loader.style.display = "none";
             }
         });
 }
@@ -486,62 +490,86 @@ if (!isProductPagina && productList) {
 // halen we uit producten.json (zoeken op productnaam).
 // ==========================================
  
+if (!document.querySelector(".product-page")) {
+    const homeCards = document.querySelectorAll(".product-card");
+
+    if (homeCards.length > 0) {
+        fetch("producten.json")
+            .then((response) => response.json())
+            .then((products) => {
+                homeCards.forEach((card) => {
+                    const nameElement = card.querySelector(".product-card__name");
+                    const badge = card.querySelector(".stock-badge");
+
+                    if (!nameElement || !badge) {
+                        return;
+                    }
+
+                    const product = products.find((p) => p.name === nameElement.textContent.trim());
+
+                    if (product) {
+                        showStock(badge, product.stock);
+                    }
+                });
+            })
+            .catch((error) => console.error(error));
+    }
+}
+
+// ==========================================
+// User Story 9 - Loading state voor de productpagina
+// ==========================================
+
 if (isProductPagina && productList) {
     if (loader) {
-        loader.style.display = "block";
+        loader.style.display = "flex";
     }
- 
+
     fetch("producten.json")
         .then((response) => {
             if (!response.ok) throw new Error(`Producten laden mislukt: ${response.status}`);
             return response.json();
         })
-        .then((lokaleProducten) => {
-            if (!Array.isArray(lokaleProducten)) {
+        .then((products) => new Promise((resolve) => setTimeout(() => resolve(products), LOAD_DELAY_MS)))
+        .then((products) => {
+            if (!Array.isArray(products)) {
                 throw new Error("producten.json bevat geen productarray.");
             }
- 
-            renderProducts(lokaleProducten);
-            renderButtons(lokaleProducten);
- 
-            if (loader) {
-                loader.style.display = "none";
-            }
+
+            renderProducts(products);
+            renderButtons(products);
         })
         .catch((error) => {
             console.error(error);
-            if (loader) {
-                loader.style.display = "none";
-            }
             if (noResultsMessage) {
                 noResultsMessage.textContent = "Producten konden niet worden geladen.";
                 noResultsMessage.style.display = "block";
             }
+        })
+        .finally(() => {
+            if (loader) {
+                loader.style.display = "none";
+            }
         });
-    }
- 
- 
-    // Dark Mode Toggle
- 
-    const themeToggleBtn = document.getElementById("theme-toggle");
- 
-    if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark-mode");
-        if (themeToggleBtn) themeToggleBtn.textContent = "☀️";
-    }
- 
-    if (themeToggleBtn) {
-        themeToggleBtn.addEventListener("click", () => {
-            document.body.classList.toggle("dark-mode");
- 
-            const isDarkMode = document.body.classList.contains("dark-mode");
-            localStorage.setItem("theme", isDarkMode ? "dark" : "light");
-<<<<<<< HEAD
- 
-            themeToggleBtn.textContent = isDarkMode ? "☀️ Light Mode" : "🌙 Dark Mode";
-=======
+}
 
-            themeToggleBtn.textContent = isDarkMode ? "☀️" : "🌙";
->>>>>>> a0de7b4cda24be1779d6acc84c3c6bf32403e048
-        });
-    }
+// ==========================================
+// Dark Mode Toggle
+// ==========================================
+
+const themeToggleBtn = document.getElementById("theme-toggle");
+
+if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark-mode");
+    if (themeToggleBtn) themeToggleBtn.textContent = "☀️";
+}
+
+if (themeToggleBtn) {
+    themeToggleBtn.addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+
+        const isDarkMode = document.body.classList.contains("dark-mode");
+        localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+        themeToggleBtn.textContent = isDarkMode ? "☀️" : "🌙";
+    });
+}
