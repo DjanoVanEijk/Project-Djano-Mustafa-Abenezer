@@ -401,12 +401,6 @@ function renderButtons(products) {
 
     const categories = [...new Set(products.map((product) => product.category))];
     filterContainer.replaceChildren();
- 
-    const allButton = document.createElement("button");
-    allButton.className = "filter-btn active";
-    allButton.dataset.filter = "all";
-    allButton.textContent = "Alle producten";
-    filterContainer.append(allButton);
 
     const favoritesButton = document.createElement("button");
     favoritesButton.className = "filter-btn";
