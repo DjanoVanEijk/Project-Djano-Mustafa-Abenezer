@@ -237,7 +237,7 @@ searchForm?.addEventListener("submit", (event) => {
  
 let sortSelect = null;
  
-if (productList) {
+if (productPage && productList) {
     const sortContainer = document.createElement("div");
     sortContainer.className = "sort-container";
  
