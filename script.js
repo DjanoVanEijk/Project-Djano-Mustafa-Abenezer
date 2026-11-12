@@ -342,36 +342,37 @@ if (!isProductPagina && productList) {
         loader.style.display = "block";
     }
 
-    fetch("https://dummyjson.com/products?limit=3")
-        .then((response) => {
-            if (!response.ok) throw new Error(`Fout bij laden API: ${response.status}`);
-            return response.json();
-        })
-        .then((data) => {
-            const apiProducten = data.products.map((item, index) => {
-                let stockVal = item.stock;
-                if (index === 0) stockVal = 2; 
-                if (index === 1) stockVal = 5;
-                if (index === 2) stockVal = 0;
+    
+    Promise.all([
+    fetch("https://dummyjson.com/products?limit=3").then((response) => {
+    if (!response.ok) throw new Error("Producten laden mislukt");
+    return response.json();
+  }),
+  fetch("stock.json").then((response) => {
+    if (!response.ok) throw new Error("Voorraad laden mislukt");
+    return response.json();
+  }),
+])
+ .then(([productData, stockData]) => {
+    const producten = productData.products.map((product, index) => ({
+      id: product.id,
+      name: product.title,
+      image: product.thumbnail,
+      price: product.price,
+      category: product.category,
+      stock: stockData[index]?.stock ?? 0,
+    }));
 
-                return {
-                    id: item.id,
-                    name: item.title,
-                    image: item.thumbnail || (item.images && item.images[0]) || "",
-                    price: item.price,
-                    stock: stockVal, 
-                    category: item.category || "Overig",
-                };
-            });
+    renderProducts(producten);
+    renderButtons(producten);
 
-            renderProducts(apiProducten);
-            renderButtons(apiProducten);
+    if (loader) {
+    loader.style.display = "none";
+    }
+    })
 
-            if (loader) {
-                loader.style.display = "none";
-            }
-        })
-        .catch((error) => {
+
+    .catch((error) => {
             console.error(error);
             if (loader) {
                 loader.style.display = "none";
