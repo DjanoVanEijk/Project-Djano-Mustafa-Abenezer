@@ -285,23 +285,23 @@ nav a {
 }
 
 :root {
-  --bg-color: #f8f9fa;
+  --bg-color: #f8fafc;
   --text-color: #333333;
   --card-bg: #ffffff;
   --border-color: #e5e7eb;
   --subtle-border-color: #e5e7eb;
-  --control-bg: #ffffff;
+  --control-bg: var(--card-bg);
   --control-hover-bg: #f0f0f0;
   --stock-badge-color: #1d4ed8;
 }
 
 body.dark-mode {
-  --bg-color: #1c1c1e;
+  --bg-color: #191b1f;
   --text-color: #f1f1f1;
-  --card-bg: #222326;
+  --card-bg: #24272d;
   --border-color: #454545;
   --subtle-border-color: #343840;
-  --control-bg: #1e1e1e;
+  --control-bg: var(--card-bg);
   --control-hover-bg: #2a2a2a;
   --primary-color: #1e3a8a;
   --primary-color-dark: #172554;
@@ -365,17 +365,12 @@ body {
 
 .sort-select {
   padding: 8px 14px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   border-radius: 20px;
-  background-color: #ffffff;
+  background-color: var(--control-bg);
+  color: var(--text-color);
   font-weight: bold;
   cursor: pointer;
-}
-
-body.dark-mode .sort-select {
-  background-color: var(--card-bg);
-  color: var(--text-color);
-  border-color: #555555;
 }
 
 #loading-message {
