@@ -285,22 +285,22 @@ nav a {
 }
 
 :root {
-  --bg-color: #ffffff;
+  --bg-color: #f8f9fa;
   --text-color: #333333;
-  --card-bg: #f9fafb;
+  --card-bg: #ffffff;
   --border-color: #e5e7eb;
-  --subtle-border-color: #eef0f2;
+  --subtle-border-color: #e5e7eb;
   --control-bg: #ffffff;
   --control-hover-bg: #f0f0f0;
   --stock-badge-color: #1d4ed8;
 }
 
 body.dark-mode {
-  --bg-color: #121212;
+  --bg-color: #1c1c1e;
   --text-color: #f1f1f1;
-  --card-bg: #1e1e1e;
+  --card-bg: #222326;
   --border-color: #454545;
-  --subtle-border-color: #353535;
+  --subtle-border-color: #343840;
   --control-bg: #1e1e1e;
   --control-hover-bg: #2a2a2a;
   --primary-color: #1e3a8a;
