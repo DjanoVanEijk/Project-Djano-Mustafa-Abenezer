@@ -420,8 +420,6 @@ function renderButtons(products) {
  
  
    
-const LOAD_DELAY_MS = 0;
-
 // ==========================================
 // User Story 8 - Externe API voor zowel Homepage als Productpagina
 // ==========================================
@@ -431,132 +429,67 @@ const loader = document.getElementById('loading-message');
  
 if (!isProductPagina && productList) {
     if (loader) {
-        loader.style.display = "flex";
+        loader.style.display = "block";
     }
 
     
     Promise.all([
-    fetch("https://dummyjson.com/products?limit=3").then((response) => {
-    if (!response.ok) throw new Error("Producten laden mislukt");
-    return response.json();
-  }),
-  fetch("stock.json").then((response) => {
-    if (!response.ok) throw new Error("Voorraad laden mislukt");
-    return response.json();
-  }),
-])
- .then(([productData, stockData]) => {
-    const producten = productData.products.map((product, index) => ({
-      id: product.id,
-      name: product.title,
-      image: product.thumbnail,
-      price: product.price,
-      category: product.category,
-      stock: stockData[index]?.stock ?? 0,
-    }));
-
-    renderProducts(producten);
-    renderButtons(producten);
-
-    if (loader) {
-    loader.style.display = "none";
-    }
-    })
-
-
-    .catch((error) => {
- 
-    fetch("https://dummyjson.com/products?limit=3")
-        .then((response) => {
-            if (!response.ok) throw new Error(`Fout bij laden API: ${response.status}`);
+        fetch("https://dummyjson.com/products?limit=3").then((response) => {
+            if (!response.ok) {
+                throw new Error(`Producten laden mislukt: ${response.status}`);
+            }
             return response.json();
-        })
-        .then((products) => new Promise((resolve) => setTimeout(() => resolve(products), LOAD_DELAY_MS)))
-        .then((data) => {
-            const apiProducten = data.products.map((item, index) => {
-                let stockVal = item.stock;
-                if (index === 0) stockVal = 2; 
-                if (index === 1) stockVal = 5;
-                if (index === 2) stockVal = 0;
- 
-                return {
-                    id: item.id,
-                    name: item.title,
-                    image: item.thumbnail || (item.images && item.images[0]) || "",
-                    price: item.price,
-                    stock: stockVal, 
-                    category: item.category || "Overig",
-                };
-            });
- 
-            renderProducts(apiProducten);
-            renderButtons(apiProducten);
- 
+        }),
+        fetch("stock.json").then((response) => {
+            if (!response.ok) {
+                throw new Error(`Voorraad laden mislukt: ${response.status}`);
+            }
+            return response.json();
+        }),
+    ])
+        .then(([productData, stockData]) => {
+            const producten = productData.products.map((product, index) => ({
+                id: product.id,
+                name: product.title,
+                image: product.thumbnail,
+                price: product.price,
+                category: product.category,
+                stock: stockData[index]?.stock ?? 0,
+            }));
+
+            renderProducts(producten);
+            renderButtons(producten);
+
             if (loader) {
                 loader.style.display = "none";
             }
         })
         .catch((error) => {
-            console.error(error);
+            console.error("Producten konden niet worden geladen.", error);
+
+            if (loader) {
+                loader.style.display = "none";
+            }
+
             if (noResultsMessage) {
                 noResultsMessage.textContent = "Oeps! De producten konden niet worden geladen.";
                 noResultsMessage.style.display = "block";
             }
         })
-        .finally(() => {
-            if (loader) {
-                loader.style.display = "none";
-            }
-        });
 }
- 
-// ==========================================
-// User Story 7 - Voorraadmelding op de homepage
-// De kaarten staan hier nog in de HTML, maar de voorraadmelding
-// halen we uit producten.json (zoeken op productnaam).
-// ==========================================
- 
-if (!document.querySelector(".product-page")) {
-    const homeCards = document.querySelectorAll(".product-card");
-
-    if (homeCards.length > 0) {
-        fetch("producten.json")
-            .then((response) => response.json())
-            .then((products) => {
-                homeCards.forEach((card) => {
-                    const nameElement = card.querySelector(".product-card__name");
-                    const badge = card.querySelector(".stock-badge");
-
-                    if (!nameElement || !badge) {
-                        return;
-                    }
-
-                    const product = products.find((p) => p.name === nameElement.textContent.trim());
-
-                    if (product) {
-                        showStock(badge, product.stock);
-                    }
-                });
-            })
-            .catch((error) => console.error(error));
-    }
-}
-
-// ==========================================
-// User Story 9 - Loading state voor de productpagina
-// ==========================================
 
 if (isProductPagina && productList) {
     if (loader) {
-        loader.style.display = "flex";
+        loader.style.display = "block";
     }
 
     fetch("producten.json")
         .then((response) => {
-            if (!response.ok) throw new Error(`Producten laden mislukt: ${response.status}`);
+            if (!response.ok) {
+                throw new Error(`Producten laden mislukt: ${response.status}`);
+            }
             return response.json();
         })
-        .then((products) => new Promise((resolve) => setTimeout(() => resolve(products), LOAD_DELAY_MS)))
         .then((products) => {
             if (!Array.isArray(products)) {
                 throw new Error("producten.json bevat geen productarray.");
@@ -566,7 +499,7 @@ if (isProductPagina && productList) {
             renderButtons(products);
         })
         .catch((error) => {
-            console.error(error);
+            console.error("Producten konden niet worden geladen.", error);
             if (noResultsMessage) {
                 noResultsMessage.textContent = "Producten konden niet worden geladen.";
                 noResultsMessage.style.display = "block";
